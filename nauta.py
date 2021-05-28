@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import sys
+sys.path.append('tools/')
 
 from pprint import pprint
 from textwrap import dedent
@@ -15,6 +17,7 @@ import os
 import re
 
 import logging
+from timeset import *
 
 CONFIG_DIR = os.path.expanduser("~/.local/share/nauta/")
 try:
@@ -196,6 +199,7 @@ def up(args):
                 time.sleep(1)
                 if not os.path.exists(LOGOUT_URL_FILE):
                     break
+                timer(args, login_time, down)
         except KeyboardInterrupt:
             print("Got a Ctrl+C, logging out...")
             log("Got Ctrl+C. Attempting disconnect...")
@@ -454,6 +458,7 @@ def main(args):
     up_parser = subparsers.add_parser('up')
     up_parser.set_defaults(func=up)
     up_parser.add_argument('username', nargs="?")
+    up_parser.add_argument('time', nargs="?")
 
     down_parser = subparsers.add_parser('down')
     down_parser.set_defaults(func=down)
